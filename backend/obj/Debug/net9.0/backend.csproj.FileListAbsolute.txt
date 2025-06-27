@@ -166,3 +166,6 @@ C:\Users\Thur\Documents\GitHub\CRUD\backend\obj\Debug\net9.0\backend.genruntimec
 C:\Users\Thur\Documents\GitHub\CRUD\backend\obj\Debug\net9.0\ref\backend.dll
 C:\Users\Thur\Documents\GitHub\CRUD\backend\bin\Debug\net9.0\MySqlConnector.dll
 C:\Users\Thur\Documents\GitHub\CRUD\backend\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Thur\Documents\GitHub\CRUD\backend\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Thur\Documents\GitHub\CRUD\backend\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Thur\Documents\GitHub\CRUD\backend\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
