@@ -47,8 +47,20 @@ public class UserController : ControllerBase
             return BadRequest();
         }
 
-        _context.Entry(user).State = EntityState.Modified;
+        var existingUser = _context.Users.Find(id);
+        if (existingUser == null)
+        {
+            return NotFound();
+        }
+
+        existingUser.Nome = user.Nome;
+        existingUser.Email = user.Email;
+        existingUser.Employment = user.Employment;
+        existingUser.Level = user.Level;
+        existingUser.PrimaryLanguage = user.PrimaryLanguage;
+
         _context.SaveChanges();
+
         return NoContent();
     }
 

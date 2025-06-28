@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "qv5wDEViqjI=",
+  "dgSpecHash": "fkBBWo8NPew=",
   "success": true,
   "projectFilePath": "C:\\Users\\Thur\\Documents\\GitHub\\CRUD\\backend\\backend.csproj",
   "expectedPackageFiles": [
@@ -52,8 +52,8 @@
     "C:\\Users\\Thur\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\Thur\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Thur\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
-    "C:\\Users\\Thur\\.nuget\\packages\\mysqlconnector\\2.3.5\\mysqlconnector.2.3.5.nupkg.sha512",
-    "C:\\Users\\Thur\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\8.0.3\\pomelo.entityframeworkcore.mysql.8.0.3.nupkg.sha512",
+    "C:\\Users\\Thur\\.nuget\\packages\\mysqlconnector\\2.4.0\\mysqlconnector.2.4.0.nupkg.sha512",
+    "C:\\Users\\Thur\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\9.0.0-preview.3.efcore.9.0.0\\pomelo.entityframeworkcore.mysql.9.0.0-preview.3.efcore.9.0.0.nupkg.sha512",
     "C:\\Users\\Thur\\.nuget\\packages\\swashbuckle.aspnetcore\\9.0.1\\swashbuckle.aspnetcore.9.0.1.nupkg.sha512",
     "C:\\Users\\Thur\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\9.0.1\\swashbuckle.aspnetcore.swagger.9.0.1.nupkg.sha512",
     "C:\\Users\\Thur\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\9.0.1\\swashbuckle.aspnetcore.swaggergen.9.0.1.nupkg.sha512",
@@ -95,11 +95,11 @@
   ],
   "logs": [
     {
-      "code": "NU1608",
+      "code": "NU1603",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Versão detectada do pacote fora da restrição de dependência: Pomelo.EntityFrameworkCore.MySql 8.0.3 requer Microsoft.EntityFrameworkCore.Relational (>= 8.0.13 && <= 8.0.999), mas a versão Microsoft.EntityFrameworkCore.Relational 9.0.6 foi resolvida.",
-      "libraryId": "Microsoft.EntityFrameworkCore.Relational",
+      "message": "backend depende de Pomelo.EntityFrameworkCore.MySql (>= 9.0.0-preview.3) mas Pomelo.EntityFrameworkCore.MySql 9.0.0-preview.3 não foi encontrado. Pomelo.EntityFrameworkCore.MySql 9.0.0-preview.3.efcore.9.0.0 foi resolvido.",
+      "libraryId": "Pomelo.EntityFrameworkCore.MySql",
       "targetGraphs": [
         "net9.0"
       ]

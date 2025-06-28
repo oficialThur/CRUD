@@ -16,9 +16,9 @@ namespace backend.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("User", b =>
                 {
@@ -26,13 +26,22 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Employment")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Level")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("PrimaryLanguage")
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
