@@ -1,80 +1,151 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using backend.Data;
+using backend.Models;
 
-[ApiController]
-[Route("api/[controller]")]
-
-public class UserController : ControllerBase
+namespace backend.Controllers
 {
-    private readonly AppDataContext _context;
-
-    public UserController(AppDataContext context)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UserController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly AppDataContext _context;
+        private readonly ILogger<UserController> _logger;
 
-    [HttpGet]
-    public IActionResult GetUsers()
-    {
-        var users = _context.Users.ToList();
-        return Ok(users);
-    }
-
-    [HttpGet("{id}")]
-    public IActionResult GetUser(int id)
-    {
-        var user = _context.Users.Find(id);
-        if (user == null)
+        public UserController(AppDataContext context, ILogger<UserController> logger)
         {
-            return NotFound();
-        }
-        return Ok(user);
-    }
-
-    [HttpPost]
-    public IActionResult CreateUser(User user)
-    {
-        _context.Users.Add(user);
-        _context.SaveChanges();
-        return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult UpdateUser(int id, User user)
-    {
-        if (id != user.Id)
-        {
-            return BadRequest();
+            _context = context;
+            _logger = logger;
         }
 
-        var existingUser = _context.Users.Find(id);
-        if (existingUser == null)
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
         {
-            return NotFound();
+            try
+            {
+                var users = await _context.Users.ToListAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar usuários");
+                return StatusCode(500, "Erro interno do servidor");
+            }
         }
 
-        existingUser.Nome = user.Nome;
-        existingUser.Email = user.Email;
-        existingUser.Employment = user.Employment;
-        existingUser.Level = user.Level;
-        existingUser.PrimaryLanguage = user.PrimaryLanguage;
-
-        _context.SaveChanges();
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult DeleteUser(int id)
-    {
-        var user = _context.Users.Find(id);
-        if (user == null)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(int id)
         {
-            return NotFound();
+            try
+            {
+                var user = await _context.Users.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound($"Usuário com ID {id} não encontrado");
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar usuário com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
         }
 
-        _context.Users.Remove(user);
-        _context.SaveChanges();
-        return NoContent();
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] User user)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Verificar se o email já existe
+                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+                if (existingUser != null)
+                {
+                    return BadRequest("Email já está em uso");
+                }
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                
+                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao criar usuário");
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                if (id != user.Id)
+                {
+                    return BadRequest("ID da URL não corresponde ao ID do usuário");
+                }
+
+                var existingUser = await _context.Users.FindAsync(id);
+                if (existingUser == null)
+                {
+                    return NotFound($"Usuário com ID {id} não encontrado");
+                }
+
+                // Verificar se o email já existe em outro usuário
+                var emailExists = await _context.Users
+                    .AnyAsync(u => u.Email == user.Email && u.Id != id);
+                if (emailExists)
+                {
+                    return BadRequest("Email já está em uso por outro usuário");
+                }
+
+                existingUser.Nome = user.Nome;
+                existingUser.Email = user.Email;
+                existingUser.Employment = user.Employment;
+                existingUser.Level = user.Level;
+                existingUser.PrimaryLanguage = user.PrimaryLanguage;
+
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao atualizar usuário com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                var user = await _context.Users.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound($"Usuário com ID {id} não encontrado");
+                }
+
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao deletar usuário com ID {Id}", id);
+                return StatusCode(500, "Erro interno do servidor");
+            }
+        }
     }
 }
